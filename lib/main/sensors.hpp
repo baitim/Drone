@@ -18,7 +18,7 @@ private:
 public:
     Quaternion q;                // [w, x, y, z]         quaternion container
     VectorFloat gravity;         // [x, y, z]            gravity vector
-    float ypr[3];                // [yaw, pitch, roll]   yaw/pitch/roll container
+    float ypr[3];               // [yaw, pitch, roll]   yaw/pitch/roll container
 
     esp_err_t initialize();
     void read_data();
@@ -30,7 +30,7 @@ class bmp280_handler_t {
 
 public:
     float pressure;
-    float temperature; 
+    float temperature;
     float humidity;
 
     esp_err_t initialize();

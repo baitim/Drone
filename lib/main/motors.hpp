@@ -35,7 +35,7 @@ public:
     }
 
     double get_throttle() const noexcept { return throttle_; }
-    void   set_throttle(double throttle) { return throttle_ = throttle; }
+    void   set_throttle(double throttle) { throttle_ = throttle; }
 
     void init_motor() {
         ESP_ERROR_CHECK(ledc_channel_config(&ledc_motor_channel));

@@ -37,16 +37,16 @@
 
 constexpr const char* TAG = "example";
 
-float TAR_OVERALL_THROTTLE = 0;
-float TAR_YAW  = 0;
-float TAR_PITCH = 0;
-float TAR_ROLL  = 0;
-int   THROTTLE_VERIFIED = 0;
+double TAR_OVERALL_THROTTLE = 0;
+double TAR_YAW   = 0;
+double TAR_PITCH = 0;
+double TAR_ROLL  = 0;
+int    THROTTLE_VERIFIED = 0;
 
 
-float K_PROP[3] = {};
-float K_DIFF[3] = {};
-float K_INTG[3] = {};
+double K_PROP[3] = {};
+double K_DIFF[3] = {};
+double K_INTG[3] = {};
 bool  K_CHANGED = false;
 
 esp_err_t http_404_error_handler(httpd_req_t *req, httpd_err_code_t err) {
@@ -84,9 +84,9 @@ static esp_err_t control_post_handler(httpd_req_t *req) {
         httpd_resp_send_chunk(req, buf, result);
         remaining -= result;
         
-        float yaw_tmp, pitch_tmp, roll_tmp, throttle_tmp;
+        double yaw_tmp, pitch_tmp, roll_tmp, throttle_tmp;
         int verification_tmp = 0;
-        if (sscanf(buf, "%f %f %f %f %d", &yaw_tmp, &pitch_tmp, &roll_tmp, &throttle_tmp, &verification_tmp) == 5) {
+        if (sscanf(buf, "%lf %lf %lf %lf %d", &yaw_tmp, &pitch_tmp, &roll_tmp, &throttle_tmp, &verification_tmp) == 5) {
             ESP_LOGI(TAG, "THROTTLE SET");
             TAR_OVERALL_THROTTLE = throttle_tmp;
             TAR_YAW = yaw_tmp;
@@ -135,7 +135,7 @@ static esp_err_t PID_post_handler(httpd_req_t *req) {
         httpd_resp_send_chunk(req, buf, result);
         remaining -= result;
 
-        if (sscanf(buf, "%f %f %f %f %f %f %f %f %f", 
+        if (sscanf(buf, "%lf %lf %lf %lf %lf %lf %lf %lf %lf", 
                                                     &K_PROP[0], &K_PROP[1], &K_PROP[2], 
                                                     &K_INTG[0], &K_INTG[1], &K_INTG[2],
                                                     &K_DIFF[0], &K_DIFF[1], &K_DIFF[2]) == 9) {
@@ -147,9 +147,9 @@ static esp_err_t PID_post_handler(httpd_req_t *req) {
 
         /* Log data received */
         ESP_LOGI(TAG, "=========== RECEIVED DATA ==========");
-        ESP_LOGI(TAG, "K_PROP: %f %f %f", K_PROP[0], K_PROP[1], K_PROP[2]);
-        ESP_LOGI(TAG, "K_INTG: %f %f %f", K_INTG[0], K_INTG[1], K_INTG[2]);
-        ESP_LOGI(TAG, "K_DIFF: %f %f %f", K_DIFF[0], K_DIFF[1], K_DIFF[2]);
+        ESP_LOGI(TAG, "K_PROP: %lf %lf %lf", K_PROP[0], K_PROP[1], K_PROP[2]);
+        ESP_LOGI(TAG, "K_INTG: %lf %lf %lf", K_INTG[0], K_INTG[1], K_INTG[2]);
+        ESP_LOGI(TAG, "K_DIFF: %lf %lf %lf", K_DIFF[0], K_DIFF[1], K_DIFF[2]);
 
         ESP_LOGI(TAG, "%.*s", result, buf);
         ESP_LOGI(TAG, "====================================");
@@ -216,8 +216,7 @@ static void disconnect_handler(void* arg, esp_event_base_t event_base,
 }
 
 static void connect_handler(void* arg, esp_event_base_t event_base,
-                            int32_t event_id, void* event_data)
-{
+                            int32_t event_id, void* event_data) {
     httpd_handle_t* server = (httpd_handle_t*) arg;
     if (*server == NULL) {
         ESP_LOGI(TAG, "Starting webserver");
@@ -296,7 +295,7 @@ extern "C" void app_main() {
     #endif
 
     TAR_OVERALL_THROTTLE = 100;
-    float cur_overall_throttle = 100;
+    double cur_overall_throttle = 100;
 
     /*
     4   13
@@ -340,9 +339,9 @@ extern "C" void app_main() {
     ESP_LOGI("DRONE", "waiting done.");
     //motors armed
 
-    float cur_tar_yaw   = TAR_YAW;
-    float cur_tar_pitch = TAR_PITCH;
-    float cur_tar_roll  = TAR_ROLL;
+    double cur_tar_yaw   = TAR_YAW;
+    double cur_tar_pitch = TAR_PITCH;
+    double cur_tar_roll  = TAR_ROLL;
 
     drone.set_targets(TAR_YAW, TAR_PITCH, TAR_ROLL);
 
