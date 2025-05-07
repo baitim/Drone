@@ -114,7 +114,7 @@ public:
     }
 
     void force_set_throttle(double tar_throttle) {
-        throttle = std::clamp(tar_throttle, 0.f, max_throttle);
+        throttle = std::clamp(tar_throttle, 0.0, max_throttle);
     }
 
     void set_PID(double PID_Kprop_new[3], double PID_Kintg_new[3], double PID_Kdiff_new[3]) {
