@@ -86,7 +86,7 @@ static esp_err_t control_post_handler(httpd_req_t *req) {
         
         double yaw_tmp, pitch_tmp, roll_tmp, throttle_tmp;
         int verification_tmp = 0;
-        if (sscanf(buf, "%d %d %d %d %d", &yaw_tmp, &pitch_tmp, &roll_tmp, &throttle_tmp, &verification_tmp) == 5) {
+        if (sscanf(buf, "%lf %lf %lf %lf %d", &yaw_tmp, &pitch_tmp, &roll_tmp, &throttle_tmp, &verification_tmp) == 5) {
             ESP_LOGI(TAG, "THROTTLE SET");
             TAR_OVERALL_THROTTLE = throttle_tmp;
             TAR_YAW = yaw_tmp;
@@ -135,7 +135,7 @@ static esp_err_t PID_post_handler(httpd_req_t *req) {
         httpd_resp_send_chunk(req, buf, result);
         remaining -= result;
 
-        if (sscanf(buf, "%d %d %d %d %d %d %d %d %d", 
+        if (sscanf(buf, "%lf %lf %lf %lf %lf %lf %lf %lf %lf", 
                                                     &K_PROP[0], &K_PROP[1], &K_PROP[2], 
                                                     &K_INTG[0], &K_INTG[1], &K_INTG[2],
                                                     &K_DIFF[0], &K_DIFF[1], &K_DIFF[2]) == 9) {
@@ -147,9 +147,9 @@ static esp_err_t PID_post_handler(httpd_req_t *req) {
 
         /* Log data received */
         ESP_LOGI(TAG, "=========== RECEIVED DATA ==========");
-        ESP_LOGI(TAG, "K_PROP: %d %d %d", K_PROP[0], K_PROP[1], K_PROP[2]);
-        ESP_LOGI(TAG, "K_INTG: %d %d %d", K_INTG[0], K_INTG[1], K_INTG[2]);
-        ESP_LOGI(TAG, "K_DIFF: %d %d %d", K_DIFF[0], K_DIFF[1], K_DIFF[2]);
+        ESP_LOGI(TAG, "K_PROP: %lf %lf %lf", K_PROP[0], K_PROP[1], K_PROP[2]);
+        ESP_LOGI(TAG, "K_INTG: %lf %lf %lf", K_INTG[0], K_INTG[1], K_INTG[2]);
+        ESP_LOGI(TAG, "K_DIFF: %lf %lf %lf", K_DIFF[0], K_DIFF[1], K_DIFF[2]);
 
         ESP_LOGI(TAG, "%.*s", result, buf);
         ESP_LOGI(TAG, "====================================");
