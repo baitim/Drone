@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <vector>
 #include "driver/ledc.h"
 #include "esp_err.h"
 #include "esp_log.h"
