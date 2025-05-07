@@ -41,7 +41,7 @@ double TAR_OVERALL_THROTTLE = 0;
 double TAR_YAW   = 0;
 double TAR_PITCH = 0;
 double TAR_ROLL  = 0;
-int   THROTTLE_VERIFIED = 0;
+int    THROTTLE_VERIFIED = 0;
 
 
 double K_PROP[3] = {};
