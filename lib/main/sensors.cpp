@@ -12,19 +12,19 @@
 
 #include "sensors.hpp"
 
-void bmp280_handler::print_data() const {
+void bmp280_handler_t::print_data() const {
     std::cout << "pressure: "    << pressure    << ", "
               << "temperature: " << temperature << "\n";
 }
 
-void bmp280_handler::read_data() {
+void bmp280_handler_t::read_data() {
     if (bmp280_read_float(&bmp_dev, &temperature, &pressure, &humidity) == ESP_OK)
         return;
 
     std::cout << "\n\nBMP280: Failed to read data\n\n";
 }
 
-esp_err_t bmp280_handler::initialize() {
+esp_err_t bmp280_handler_t::initialize() {
     esp_err_t result = ESP_OK;
     bmp280_params_t params;
     bmp280_init_default_params(&params);
@@ -50,7 +50,7 @@ esp_err_t bmp280_handler::initialize() {
     return ESP_OK;
 }
 
-void mpu6050_handler::read_data() {
+void mpu6050_handler_t::read_data() {
     mpuIntStatus = mpu.getIntStatus();
     fifoCount = mpu.getFIFOCount();
 
@@ -66,7 +66,7 @@ void mpu6050_handler::read_data() {
     }
 }
 
-void mpu6050_handler::print_data() const {
+void mpu6050_handler_t::print_data() const {
     std::cout << "mpu6050 data:\n";
     std::cout << "\tYAW:   " << ypr[0] * 180 / M_PI
               << "\tPITCH: " << ypr[1] * 180 / M_PI
@@ -74,7 +74,7 @@ void mpu6050_handler::print_data() const {
               << "g: [" << gravity.x <<  "," << gravity.y << ", " << gravity.z << "]";
 }
 
-esp_err_t mpu6050_handler::initialize() {
+esp_err_t mpu6050_handler_t::initialize() {
     mpu.initialize();
     mpu.dmpInitialize();
     mpu.CalibrateAccel(6);
@@ -85,7 +85,7 @@ esp_err_t mpu6050_handler::initialize() {
 }
 
 
-esp_err_t init_sensors(mpu6050_handler* mpu_handler, bmp280_handler* bmp_handler) {
+esp_err_t init_sensors(mpu6050_handler_t* mpu_handler, bmp280_handler_t* bmp_handler) {
     esp_err_t result = i2cdev_init();
     if (result != ESP_OK) {
         std::cout << "Failed to initialize i2cdev: " << result << "\n";
@@ -105,7 +105,7 @@ esp_err_t init_sensors(mpu6050_handler* mpu_handler, bmp280_handler* bmp_handler
     return ESP_OK;
 }
 
-void read_sensors(mpu6050_handler* mpu_handler, bmp280_handler* bmp_handler) {
+void read_sensors(mpu6050_handler_t* mpu_handler, bmp280_handler_t* bmp_handler) {
     mpu_handler->read_data();
     bmp_handler->read_data();
 }

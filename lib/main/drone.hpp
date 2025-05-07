@@ -15,8 +15,8 @@ constexpr int MOTOR_COUNT = 4;
 
 class drone_t {
     std::vector<motor_t> motors;
-    mpu6050_handler mpu6050;
-    bmp280_handler  bmp280;
+    mpu6050_handler_t mpu6050;
+    bmp280_handler_t  bmp280;
 
     double YPR_tar[3] = {};
 
