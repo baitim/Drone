@@ -68,12 +68,12 @@ public:
         init_sensors(mpu6050, bmp280);
     };
 
-    void set_duty(short index, float percents) {
+    void set_duty(short index, double percents) {
         motors[index].set_throttle(percents);
         motors[index].update_duty();
     };
 
-    void set_duty(float percents) {
+    void set_duty(double percents) {
         for (int i = 0; i < MOTOR_COUNT; ++i) {
             if (motors[i].get_throttle() != percents) {
                 motors[i].set_throttle(percents);
@@ -103,21 +103,21 @@ public:
         std::cout << oss.str();
     }
 
-    void set_targets(float Y, float P, float R) {
+    void set_targets(double Y, double P, double R) {
         YPR_tar[0] = Y;
         YPR_tar[1] = P;
         YPR_tar[2] = R;
     }
 
-    void set_throttle(float tar_throttle) {
+    void set_throttle(double tar_throttle) {
         throttle = std::clamp(tar_throttle, min_throttle, max_throttle);
     }
 
-    void force_set_throttle(float tar_throttle) {
+    void force_set_throttle(double tar_throttle) {
         throttle = std::clamp(tar_throttle, 0, max_throttle);
     }
 
-    void set_PID(float PID_Kprop_new[3], float PID_Kintg_new[3], float PID_Kdiff_new[3]) {
+    void set_PID(double PID_Kprop_new[3], double PID_Kintg_new[3], double PID_Kdiff_new[3]) {
         for (int i = 0; i < 3; ++i) {
             PID_Kprop[i] = PID_Kprop_new[i];
             PID_Kdiff[i] = PID_Kdiff_new[i];
