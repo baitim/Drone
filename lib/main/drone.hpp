@@ -65,7 +65,7 @@ public:
     };
 
     void initialize_sensors() {
-        init_sensors(&mpu6050, &bmp280);
+        init_sensors(mpu6050, bmp280);
     };
 
     void set_duty(short index, float percents) {
@@ -83,7 +83,7 @@ public:
     }
 
     void read_sensors_values() {
-        read_sensors(&mpu6050, &bmp280);
+        read_sensors(mpu6050, bmp280);
     }
 
     void print_state() {
