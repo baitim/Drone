@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <esp_system.h>
@@ -9,6 +8,8 @@
 #include "MPU6050.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 #include "i2cdev.h"
+#include <iostream>
+
 
 #include "sensors.hpp"
 
