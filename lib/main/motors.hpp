@@ -29,8 +29,8 @@ public:
             .timer_sel      = LEDC_TIMER_0,
             .duty           = 0,
             .hpoint         = 0,
-            .sleep_mode      = LEDC_SLEEP_MODE_NO_ALIVE_NO_PD,
-            .flags = 0
+            .sleep_mode     = LEDC_SLEEP_MODE_NO_ALIVE_NO_PD,
+            .flags          = 0
         };
     }
 
@@ -43,7 +43,7 @@ public:
 
     void update_duty() {
         ESP_LOGI("MOTOR", "motor_t at pin %d set at %%%0.2f throttle", ledc_motor_channel.gpio_num, throttle_);
-        float duty_ms = min_period*(1 + (max_period/min_period - 1)*(throttle_/100));
+        float duty_ms = min_period * (1 + (max_period/min_period - 1) * (throttle_ / 100));
 
         uint32_t max_duty = (1 << ledc_timer_resolution) - 1;
         uint32_t duty = (duty_ms * ledc_frequency * max_duty) / 1000000;

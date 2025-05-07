@@ -85,7 +85,7 @@ esp_err_t mpu6050_handler_t::initialize() {
 }
 
 
-esp_err_t init_sensors(mpu6050_handler_t* mpu_handler, bmp280_handler_t* bmp_handler) {
+esp_err_t init_sensors(mpu6050_handler_t& mpu_handler, bmp280_handler_t& bmp_handler) {
     esp_err_t result = i2cdev_init();
     if (result != ESP_OK) {
         std::cout << "Failed to initialize i2cdev: " << result << "\n";
@@ -93,7 +93,7 @@ esp_err_t init_sensors(mpu6050_handler_t* mpu_handler, bmp280_handler_t* bmp_han
         return result;
     }
 
-    result = bmp_handler->initialize();
+    result = bmp_handler.initialize();
 
     if (result != ESP_OK) {
         std::cout << "Failed to initialize bmp280: " << result << "\n";
@@ -101,11 +101,11 @@ esp_err_t init_sensors(mpu6050_handler_t* mpu_handler, bmp280_handler_t* bmp_han
         return result;
     }
 
-    mpu_handler->initialize();
+    mpu_handler.initialize();
     return ESP_OK;
 }
 
-void read_sensors(mpu6050_handler_t* mpu_handler, bmp280_handler_t* bmp_handler) {
-    mpu_handler->read_data();
-    bmp_handler->read_data();
+void read_sensors(mpu6050_handler_t& mpu_handler, bmp280_handler_t& bmp_handler) {
+    mpu_handler.read_data();
+    bmp_handler.read_data();
 }

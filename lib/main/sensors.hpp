@@ -38,5 +38,5 @@ public:
     void print_data() const;
 };
 
-esp_err_t init_sensors(mpu6050_handler_t* mpu_handler, bmp280_handler_t* bmp_handler);
-void      read_sensors(mpu6050_handler_t* mpu_handler, bmp280_handler_t* bmp_handler);
+esp_err_t init_sensors(mpu6050_handler_t& mpu_handler, bmp280_handler_t& bmp_handler);
+void      read_sensors(mpu6050_handler_t& mpu_handler, bmp280_handler_t& bmp_handler);

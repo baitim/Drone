@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include "driver/ledc.h"
@@ -157,7 +158,7 @@ public:
             if (YPR_tune[i]) {
                 YPR_diff_n2[i] = YPR_diff_n1[i];
                 YPR_diff_n1[i] = YPR_diff_n[i];
-                YPR_diff_n[i] = YPR_tar[i] - mpu6050.ypr[i];
+                YPR_diff_n[i]  = YPR_tar[i] - mpu6050.ypr[i];
     
                 /* U(n) =   U(n-1) + 
                             Kp * (E(n) - E(n-1)) +
