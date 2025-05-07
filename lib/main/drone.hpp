@@ -110,11 +110,11 @@ public:
     }
 
     void set_throttle(float tar_throttle) {
-        throttle = clamp(tar_throttle, min_throttle, max_throttle);
+        throttle = std::clamp(tar_throttle, min_throttle, max_throttle);
     }
 
     void force_set_throttle(float tar_throttle) {
-        throttle = clamp(tar_throttle, 0, max_throttle);
+        throttle = std::clamp(tar_throttle, 0, max_throttle);
     }
 
     void set_PID(float PID_Kprop_new[3], float PID_Kintg_new[3], float PID_Kdiff_new[3]) {
@@ -142,10 +142,10 @@ public:
         auto& val1 = Control_val_YPR[1];
         auto& val2 = Control_val_YPR[2];
 
-        set_duty(0, clamp(throttle + val0 - val1 - val2, min_throttle, max_throttle));
-        set_duty(1, clamp(throttle - val0 - val1 + val2, min_throttle, max_throttle));
-        set_duty(2, clamp(throttle + val0 + val1 + val2, min_throttle, max_throttle));
-        set_duty(3, clamp(throttle - val0 + val1 - val2, min_throttle, max_throttle));
+        set_duty(0, std::clamp(throttle + val0 - val1 - val2, min_throttle, max_throttle));
+        set_duty(1, std::clamp(throttle - val0 - val1 + val2, min_throttle, max_throttle));
+        set_duty(2, std::clamp(throttle + val0 + val1 + val2, min_throttle, max_throttle));
+        set_duty(3, std::clamp(throttle - val0 + val1 - val2, min_throttle, max_throttle));
     }
 
     void processPID() {
