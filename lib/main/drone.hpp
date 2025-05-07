@@ -114,7 +114,7 @@ public:
     }
 
     void force_set_throttle(double tar_throttle) {
-        throttle = std::clamp(tar_throttle, 0, max_throttle);
+        throttle = std::clamp(tar_throttle, 0.f, max_throttle);
     }
 
     void set_PID(double PID_Kprop_new[3], double PID_Kintg_new[3], double PID_Kdiff_new[3]) {
@@ -172,8 +172,6 @@ public:
                         PID_Kintg[i] *  YPR_diff_n[i] + 
                         PID_Kdiff[i] * (YPR_diff_n[i] - 2 * YPR_diff_n1[i] + YPR_diff_n2[i]);
                 Control_val_YPR[i] = val;
-    
-                // ESP_LOGI("PID", "%d: %f", i, val);
             }
         }
     }
