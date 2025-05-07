@@ -67,13 +67,13 @@ esp_err_t http_404_error_handler(httpd_req_t *req, httpd_err_code_t err) {
 /* my custom handlers */
 static esp_err_t control_post_handler(httpd_req_t *req) {
     char buf[100];
-    int ret, remaining = req->content_len;
+    int result, remaining = req->content_len;
 
     while (remaining > 0) {
         /* Read the data for the request */
-        if ((ret = httpd_req_recv(req, buf,
+        if ((result = httpd_req_recv(req, buf,
                         MIN(remaining, sizeof(buf)))) <= 0) {
-            if (ret == HTTPD_SOCK_ERR_TIMEOUT) {
+            if (result == HTTPD_SOCK_ERR_TIMEOUT) {
                 /* Retry receiving if timeout occurred */
                 continue;
             }
@@ -81,8 +81,8 @@ static esp_err_t control_post_handler(httpd_req_t *req) {
         }
 
         /* Send back the same data */
-        httpd_resp_send_chunk(req, buf, ret);
-        remaining -= ret;
+        httpd_resp_send_chunk(req, buf, result);
+        remaining -= result;
         
         float yaw_tmp, pitch_tmp, roll_tmp, throttle_tmp;
         int verification_tmp = 0;
@@ -99,7 +99,7 @@ static esp_err_t control_post_handler(httpd_req_t *req) {
         ESP_LOGI(TAG, "=========== RECEIVED DATA ==========");
         ESP_LOGI(TAG, "throttle: %.3f", throttle_tmp);
         ESP_LOGI(TAG, "[Y, P, R]: %.3f, %.3f, %.3f", yaw_tmp, pitch_tmp, roll_tmp);
-        ESP_LOGI(TAG, "%.*s", ret, buf);
+        ESP_LOGI(TAG, "%.*s", result, buf);
         ESP_LOGI(TAG, "====================================");
     }
 
@@ -118,13 +118,13 @@ static const httpd_uri_t control_URI_handler = {
 /* my custom handlers */
 static esp_err_t PID_post_handler(httpd_req_t *req) {
     char buf[100];
-    int ret, remaining = req->content_len;
+    int result, remaining = req->content_len;
 
     while (remaining > 0) {
         /* Read the data for the request */
-        if ((ret = httpd_req_recv(req, buf,
+        if ((result = httpd_req_recv(req, buf,
                         MIN(remaining, sizeof(buf)))) <= 0) {
-            if (ret == HTTPD_SOCK_ERR_TIMEOUT) {
+            if (result == HTTPD_SOCK_ERR_TIMEOUT) {
                 /* Retry receiving if timeout occurred */
                 continue;
             }
@@ -132,18 +132,16 @@ static esp_err_t PID_post_handler(httpd_req_t *req) {
         }
 
         /* Send back the same data */
-        httpd_resp_send_chunk(req, buf, ret);
-        remaining -= ret;
-        
-        
+        httpd_resp_send_chunk(req, buf, result);
+        remaining -= result;
+
         if (sscanf(buf, "%f %f %f %f %f %f %f %f %f", 
                                                     &K_PROP[0], &K_PROP[1], &K_PROP[2], 
                                                     &K_INTG[0], &K_INTG[1], &K_INTG[2],
                                                     &K_DIFF[0], &K_DIFF[1], &K_DIFF[2]) == 9) {
             ESP_LOGI(TAG, "GOT NEW COEFFS");
             K_CHANGED = true;
-        }
-        else {
+        } else {
             ESP_LOGE(TAG, "Invalid data in sscanf read");
         }
 
@@ -153,7 +151,7 @@ static esp_err_t PID_post_handler(httpd_req_t *req) {
         ESP_LOGI(TAG, "K_INTG: %f %f %f", K_INTG[0], K_INTG[1], K_INTG[2]);
         ESP_LOGI(TAG, "K_DIFF: %f %f %f", K_DIFF[0], K_DIFF[1], K_DIFF[2]);
 
-        ESP_LOGI(TAG, "%.*s", ret, buf);
+        ESP_LOGI(TAG, "%.*s", result, buf);
         ESP_LOGI(TAG, "====================================");
     }
 

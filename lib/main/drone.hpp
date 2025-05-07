@@ -1,6 +1,7 @@
 #pragma once
 
-#include <stdio.h>
+#include <iostream>
+#include <sstream>
 #include "driver/ledc.h"
 #include "esp_err.h"
 #include "esp_log.h"
@@ -15,7 +16,7 @@ constexpr int MOTOR_COUNT = 4;
 class drone_t {
     std::vector<motor_t> motors;
     mpu6050_handler mpu6050;
-    bmp280_handler bmp280;
+    bmp280_handler  bmp280;
 
     double YPR_tar[3] = {};
 
@@ -66,14 +67,14 @@ public:
     };
 
     void set_duty(short index, float percents) {
-        motors[index].throttle() = percents;
+        motors[index].set_throttle(percents);
         motors[index].update_duty();
     };
 
     void set_duty(float percents) {
         for (int i = 0; i < MOTOR_COUNT; ++i) {
-            if (motors[i].throttle() != percents) {
-                motors[i].throttle() = percents;
+            if (motors[i].get_throttle() != percents) {
+                motors[i].set_throttle(percents);
                 motors[i].update_duty();
             }
         }
@@ -84,17 +85,20 @@ public:
     }
 
     void print_state() {
-        printf("\033[0H\033[0J");
-        printf("T_YAW: %3.1f, T_PITCH: %3.1f, T_ROLL: %3.1f \nYAW:   %3.1f, PITCH:   %3.1f, ROLL:   %3.1f \ng: [%.2f, %.2f, %.2f] \npressure: %.2f, temperature: %.2f\nPID: %.3f, %.3f, %.3f\n %.2f %.2f %.2f %.2f\ncoeffs:\nP: %.3lf %.3lf %.3lf\nI: %.3lf %.3lf %.3lf\nD: %.3lf %.3lf %.3lf\n", 
-                YPR_tar[0], YPR_tar[1], YPR_tar[2],
-                mpu6050.ypr[0] * 180/M_PI, mpu6050.ypr[1] * 180/M_PI, mpu6050.ypr[2] * 180/M_PI, mpu6050.gravity.x, mpu6050.gravity.y, mpu6050.gravity.z, 
-                bmp280.pressure, bmp280.temperature, 
-                Control_val_YPR[0], Control_val_YPR[1], Control_val_YPR[2],
-                motors[0].throttle(),  motors[1].throttle(),  motors[2].throttle(),  motors[3].throttle(),
-                PID_Kprop[0], PID_Kprop[1], PID_Kprop[2],
-                PID_Kintg[0], PID_Kintg[1], PID_Kintg[2],
-                PID_Kdiff[0], PID_Kdiff[1], PID_Kdiff[2]
-            );
+        std::cout << "\033[0H\033[0J";
+
+        mpu6050.print_data();
+        bmp280.print_data();
+
+        std::ostringstream oss;
+        oss << "T_YAW  : " << YPR_tar[0]
+            << "T_PITCH: " << YPR_tar[1]
+            << "T_ROLL : " << YPR_tar[2]
+            << "Vals: " << Control_val_YPR[0] << ", " <<  Control_val_YPR[1] << ", " <<  Control_val_YPR[2]
+            << "Prop: " << PID_Kprop[0] << ", " << PID_Kprop[1] << ", " << PID_Kprop[2] << '\n'
+            << "Intg: " << PID_Kintg[0] << ", " << PID_Kintg[1] << ", " << PID_Kintg[2] << '\n'
+            << "Diff: " << PID_Kdiff[0] << ", " << PID_Kdiff[1] << ", " << PID_Kdiff[2] << '\n';
+        std::cout << oss.str();
     }
 
     void set_targets(float Y, float P, float R) {

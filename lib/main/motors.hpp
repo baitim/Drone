@@ -14,10 +14,9 @@ private:
     int max_period;
     ledc_timer_bit_t ledc_timer_resolution;
     uint32_t ledc_frequency;
-
     double throttle_ = 0;
-public:
 
+public:
     motor_t(ledc_channel_t channel, int gpio_num, ledc_timer_bit_t timer_resolution,
             ledc_mode_t ledc_mode, uint32_t frequency, int T_min, int T_max)
     : min_period(T_min), max_period(T_max), ledc_timer_resolution(timer_resolution), ledc_frequency(frequency) {
@@ -35,8 +34,8 @@ public:
         };
     }
 
-    double  throttle() const noexcept { return throttle_; }
-    double& throttle()                { return throttle_; }
+    double get_throttle() const noexcept { return throttle_; }
+    void   set_throttle(double throttle) { return throttle_ = throttle; }
 
     void init_motor() {
         ESP_ERROR_CHECK(ledc_channel_config(&ledc_motor_channel));

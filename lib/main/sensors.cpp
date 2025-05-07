@@ -13,37 +13,39 @@
 #include "sensors.hpp"
 
 void bmp280_handler::print_data() const {
-    printf("pressure: %.2f, temperature: %.2f\n", pressure, temperature);
+    std::cout << "pressure: "    << pressure    << ", "
+              << "temperature: " << temperature << "\n";
 }
 
 void bmp280_handler::read_data() {
-    if (bmp280_read_float(&bmp_dev, &temperature, &pressure, &humidity) != ESP_OK) {
-        printf("\n\nBMP280: Failed to read data\n\n");
-    }
+    if (bmp280_read_float(&bmp_dev, &temperature, &pressure, &humidity) == ESP_OK)
+        return;
+
+    std::cout << "\n\nBMP280: Failed to read data\n\n";
 }
 
 esp_err_t bmp280_handler::initialize() {
-    esp_err_t ret = ESP_OK;
+    esp_err_t result = ESP_OK;
     bmp280_params_t params;
     bmp280_init_default_params(&params);
     memset(&bmp_dev, 0, sizeof(bmp280_t));
 
-    ret = bmp280_init_desc(&bmp_dev, BMP280_I2C_ADDRESS_0, I2C_PORT, GPIO_NUM_21, GPIO_NUM_22);
-    if (ret != ESP_OK) {
-        printf("Failed to initialize BMP280: %d\n", ret);
+    result = bmp280_init_desc(&bmp_dev, BMP280_I2C_ADDRESS_0, I2C_PORT, GPIO_NUM_21, GPIO_NUM_22);
+    if (result != ESP_OK) {
+        std::cout << "Failed to initialize BMP280: " << result << "\n";
         vTaskDelete(NULL);
-        return ret;
+        return result;
     }
 
-    ret = bmp280_init(&bmp_dev, &params);
-    if (ret != ESP_OK) {
-        printf("Failed to configure BMP280: %d\n", ret);
+    result = bmp280_init(&bmp_dev, &params);
+    if (result != ESP_OK) {
+        std::cout << "Failed to configure BMP280: " << result << "\n";
         vTaskDelete(NULL);
-        return ret;
+        return result;
     }
 
     bool bme280p = (bmp_dev.id == BME280_CHIP_ID);
-    printf("BMP280: found %s\n", bme280p ? "BME280" : "BMP280");
+    std::cout << "BMP280 found: "<< (bme280p ? "BME280" : "BMP280") << "\n";
 
     return ESP_OK;
 }
@@ -61,12 +63,15 @@ void mpu6050_handler::read_data() {
         
         mpu.dmpGetGravity(&gravity, &q);
         mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-        // printf("MPU6050: YAW: %3.1f, PITCH: %3.1f, ROLL: %3.1f \n", ypr[0] * 180/M_PI, ypr[1] * 180/M_PI, ypr[2] * 180/M_PI);
     }
 }
 
 void mpu6050_handler::print_data() const {
-    printf("YAW: %3.1f, PITCH: %3.1f, ROLL: %3.1f  g: [%.2f, %.2f, %.2f]", ypr[0] * 180/M_PI, ypr[1] * 180/M_PI, ypr[2] * 180/M_PI, gravity.x, gravity.y, gravity.z);
+    std::cout << "mpu6050 data:\n";
+    std::cout << "\tYAW:   " << ypr[0] * 180 / M_PI
+              << "\tPITCH: " << ypr[1] * 180 / M_PI
+              << "\tROLL:  " << ypr[2] * 180 / M_PI
+              << "g: [" << gravity.x <<  "," << gravity.y << ", " << gravity.z << "]";
 }
 
 esp_err_t mpu6050_handler::initialize() {
@@ -75,30 +80,28 @@ esp_err_t mpu6050_handler::initialize() {
     mpu.CalibrateAccel(6);
     mpu.CalibrateGyro(6);
     mpu.setDMPEnabled(true);
-    printf("MPU6050 initialized and calibrated.\n");
-
+    std::cout << "MPU6050 initialized and calibrated.\n";
     return ESP_OK;
 }
 
 
 esp_err_t init_sensors(mpu6050_handler* mpu_handler, bmp280_handler* bmp_handler) {
-    esp_err_t ret = i2cdev_init();
-    if (ret != ESP_OK) {
-        printf("Failed to initialize i2cdev: %d\n", ret);
+    esp_err_t result = i2cdev_init();
+    if (result != ESP_OK) {
+        std::cout << "Failed to initialize i2cdev: " << result << "\n";
         vTaskDelete(NULL);
-        return ret;
+        return result;
     }
 
-    ret = bmp_handler->initialize();
+    result = bmp_handler->initialize();
 
-    if (ret != ESP_OK) {
-        printf("Failed to initialize bmp280: %d\n", ret);
+    if (result != ESP_OK) {
+        std::cout << "Failed to initialize bmp280: " << result << "\n";
         vTaskDelete(NULL);
-        return ret;
+        return result;
     }
 
     mpu_handler->initialize();
-
     return ESP_OK;
 }
 
