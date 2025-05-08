@@ -43,12 +43,17 @@
 
 ## 📸 Фото дрона
 
-![Сверху](https://github.com/baitim/Drone/raw/main/images/top.jpg)  
-![Спереди](https://github.com/baitim/Drone/raw/main/images/front.jpg)
-![Сбоку](https://github.com/baitim/Drone/raw/main/images/side.jpg)
-
-![Печатная плата — схема](https://github.com/baitim/Drone/raw/main/images/dron_shm.png)
-![Печатная плата — разводка](https://github.com/baitim/Drone/raw/main/images/dron_pcb.png)  
+<p align="center">
+  <img src="https://github.com/baitim/Drone/raw/main/images/top.jpg" width="60%" />
+  <br><br>
+  <img src="https://github.com/baitim/Drone/raw/main/images/front.jpg" width="60%" />
+  <br><br>
+  <img src="https://github.com/baitim/Drone/raw/main/images/side.png" width="60%" />
+  <br><br>
+  <img src="https://github.com/baitim/Drone/raw/main/images/dron_shm.png" width="60%" />
+  <br><br>
+  <img src="https://github.com/baitim/Drone/raw/main/images/dron_pcb.png" width="120%" />
+</p>
 
 ## 🎥 Видео работы дрона
 
