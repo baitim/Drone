@@ -44,22 +44,20 @@
 ## 📸 Фото дрона
 
 <p align="center">
-  <img src="https://github.com/baitim/Drone/raw/main/images/top.jpg" width="60%" />
+  <img src="https://github.com/baitim/Drone/raw/main/images/top.jpg" width="70%" />
   <br><br>
-  <img src="https://github.com/baitim/Drone/raw/main/images/front.jpg" width="60%" />
+  <img src="https://github.com/baitim/Drone/raw/main/images/front.jpg" width="70%" />
   <br><br>
-  <img src="https://github.com/baitim/Drone/raw/main/images/side.png" width="60%" />
+  <img src="https://github.com/baitim/Drone/raw/main/images/side.jpg" width="70%" />
   <br><br>
-  <img src="https://github.com/baitim/Drone/raw/main/images/dron_shm.png" width="60%" />
+  <img src="https://github.com/baitim/Drone/raw/main/images/dron_shm.png" width="70%" />
   <br><br>
-  <img src="https://github.com/baitim/Drone/raw/main/images/dron_pcb.png" width="120%" />
+  <img src="https://github.com/baitim/Drone/raw/main/images/dron_pcb.png" width="80%" />
 </p>
 
 ## 🎥 Видео работы дрона
 
-[![Смотреть видео](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://github.com/baitim/Drone/raw/main/images/work.mp4)
-
-> Если видео не проигрывается в браузере, [скачайте по ссылке](https://github.com/baitim/Drone/raw/main/images/work.mp4)
+📽 [Скачать и посмотреть видео](https://github.com/baitim/Drone/raw/main/images/work.mp4)
 
 ## 🔬 Тестирование
 
